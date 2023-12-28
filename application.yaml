@@ -1,33 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: application
+  name: httpd-deployment
 spec:
-  replicas: 1
+  replicas: 1  
   selector:
     matchLabels:
-      app: application
+      app: httpd
   template:
     metadata:
       labels:
-        app: application
+        app: httpd
     spec:
       containers:
-      - name: container
-        image: visalmk/brijin-image:latest
-        ports:
-        - containerPort: 80
-
+        - name: httpd-container
+          image: httpd:latest  
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: application-service-nodeport
+  name: httpd-service
 spec:
   selector:
-    app: application
+    app: httpd
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: NodePort
+
+
+
