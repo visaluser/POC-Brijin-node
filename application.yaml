@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: application
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: application
@@ -17,3 +17,18 @@ spec:
         image: visalmk/brijin-image:latest
         ports:
         - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-service
+spec:
+  selector:
+    app: application
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
