@@ -1,14 +1,9 @@
 const express = require('express');
 const app = express();
-const port = 3000;
-
-// Define a route for the root path
+const port = 4000;
 app.get('/', (req, res) => {
-  res.send('Hello, World12!');
+res.send('Hello, also Hi World!');
 });
-
-// Start the server
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(port, () => {
+console.log(`App listening at http://localhost:${port}`);
 });
-
