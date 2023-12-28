@@ -31,5 +31,5 @@ jobs:
           aws eks --region us-west-2 update-kubeconfig --name visal-cluster
 
       - name: Deploy to EKS
-        run: kubectl apply -f your-application-deployment.yaml
+        run: kubectl apply -f application.yaml
 
