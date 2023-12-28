@@ -28,7 +28,6 @@ jobs:
 
       - name: Configure Kubernetes Context
         run: |
-          cd kubernetes/
           aws eks --region us-west-2 update-kubeconfig --name visal-cluster
 
       - name: Deploy to EKS
