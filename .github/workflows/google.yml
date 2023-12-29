@@ -24,6 +24,7 @@ jobs:
         run: |
           docker build -t docker-image:latest .
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker tag docker-image:latest visalmk/docker-image:latest
           docker push visalmk/docker-image:latest
 
       - name: Configure Kubernetes Context
