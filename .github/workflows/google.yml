@@ -39,4 +39,4 @@ jobs:
           sed -i 's|image: visalmk/docker-image:latest|image: visalmk/docker-image:${{ steps.docker_build.outputs.commit_id }}|' application.yaml
 
       - name: Deploy to EKS
-        run: kubectl apply -f application.yaml
+        run: kubectl delete -f application.yaml
