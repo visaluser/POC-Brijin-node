@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: your-app-deployment
+  name: deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: your-app
+      app: my-app
   template:
     metadata:
       labels:
-        app: your-app
+        app: my-app
     spec:
       containers:
-      - name: your-app
+      - name: my-app
         image: visalmk/docker-image:latest
         ports:
         - containerPort: 4000
@@ -22,10 +22,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: your-app-service
+  name: my-app-service
 spec:
   selector:
-    app: your-app
+    app: my-app
   ports:
     - protocol: TCP
       port: 80
