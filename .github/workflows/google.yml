@@ -21,15 +21,22 @@ jobs:
           aws-region: us-west-1
 
       - name: Build and Push Docker Image
+        id: docker_build
         run: |
-          docker build -t docker-image:latest .
+          COMMIT_ID=$(git rev-parse --short=7 ${{ github.sha }})
+          docker build -t docker-image:$COMMIT_ID .
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker tag docker-image:latest visalmk/docker-image:latest
-          docker push visalmk/docker-image:latest
+          docker tag docker-image:$COMMIT_ID visalmk/docker-image:$COMMIT_ID
+          docker push visalmk/docker-image:$COMMIT_ID
+          echo "::set-output name=commit_id::$COMMIT_ID"
 
       - name: Configure Kubernetes Context
         run: |
           aws eks --region us-west-1 update-kubeconfig --name visal-cluster
+
+      - name: Update application.yaml
+        run: |
+          sed -i 's|image: visalmk/docker-image:latest|image: visalmk/docker-image:${{ steps.docker_build.outputs.commit_id }}|' application.yaml
 
       - name: Deploy to EKS
         run: kubectl apply -f application.yaml
