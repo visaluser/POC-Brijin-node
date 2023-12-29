@@ -20,9 +20,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
+      - name: Get Commit ID
+        run: |
+          COMMIT_ID=$(git rev-parse --short HEAD)
+          echo "Commit ID: $COMMIT_ID"
+          echo "::set-env name=COMMIT_ID::$COMMIT_ID"
+
       - name: Build and Push Docker Image
         run: |
-          IMAGE_TAG=$(git rev-parse --short HEAD)
+          IMAGE_TAG=${COMMIT_ID}
           docker build -t docker-image:$IMAGE_TAG .
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker tag docker-image:$IMAGE_TAG visalmk/docker-image:$IMAGE_TAG
@@ -33,4 +39,4 @@ jobs:
           aws eks --region us-west-1 update-kubeconfig --name visal-cluster
 
       - name: Deploy to EKS
-        run: kubectl delete -f application.yaml
+        run: kubectl apply -f application.yaml
