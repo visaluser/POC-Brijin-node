@@ -27,10 +27,6 @@ jobs:
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker tag docker-image:${COMMIT_ID} visalmk/docker-image:${COMMIT_ID}
           docker push visalmk/docker-image:${COMMIT_ID}
-          
-      - name: Update Deployment YAML with Commit ID
-        run: |
-          sed -i "s|{{COMMIT_ID_PLACEHOLDER}}|${COMMIT_ID}|g" application.yaml
 
       - name: Configure Kubernetes Context
         run: |
