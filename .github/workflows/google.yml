@@ -21,14 +21,12 @@ jobs:
           aws-region: us-west-1
 
       - name: Get Commit ID
-        run: |
-          COMMIT_ID=$(git rev-parse --short HEAD)
-          echo "Commit ID: $COMMIT_ID"
-          echo "::set-env name=COMMIT_ID::$COMMIT_ID"
+        id: commit
+        run: echo "::set-output name=commit_id::$(git rev-parse --short HEAD)"
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE_TAG=${COMMIT_ID}
+          IMAGE_TAG=${{ steps.commit.outputs.commit_id }}
           docker build -t docker-image:$IMAGE_TAG .
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker tag docker-image:$IMAGE_TAG visalmk/docker-image:$IMAGE_TAG
