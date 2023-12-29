@@ -22,14 +22,15 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t docker-image:latest .
+          COMMIT_ID=$(git rev-parse --short HEAD)  # Get the short commit ID
+          docker build -t docker-image:${COMMIT_ID} .
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker tag docker-image:latest visalmk/docker-image:latest
-          docker push visalmk/docker-image:latest
+          docker tag docker-image:${COMMIT_ID} visalmk/docker-image:${COMMIT_ID}
+          docker push visalmk/docker-image:${COMMIT_ID}
 
       - name: Configure Kubernetes Context
         run: |
           aws eks --region us-west-1 update-kubeconfig --name visal-cluster
 
       - name: Deploy to EKS
-        run: kubectl delete -f application.yaml
+        run: kubectl apply -f application.yaml
