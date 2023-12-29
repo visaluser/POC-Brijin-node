@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: visalmk/docker-image:{{BUILD_NUMBER_PLACEHOLDER}}
+        image: visalmk/docker-image:latest
         ports:
         - containerPort: 4000
 ---
