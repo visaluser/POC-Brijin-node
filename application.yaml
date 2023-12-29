@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: visalmk/docker-image:latest
+        image: visalmk/docker-image:${COMMIT_ID}
         ports:
         - containerPort: 4000
 ---
