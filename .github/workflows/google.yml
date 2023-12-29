@@ -32,4 +32,4 @@ jobs:
           aws eks --region us-west-1 update-kubeconfig --name visal-cluster
 
       - name: Deploy to EKS
-        run: kubectl destroy -f application.yaml
+        run: kubectl delete -f application.yaml
